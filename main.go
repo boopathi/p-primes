@@ -29,7 +29,7 @@ var (
 func init() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	flag.StringVar(&cpuprofile, "prof", "", "Write CPU Profile to file")
-	flag.IntVar(&N, "n", 10, "Filenumber to download")
+	flag.IntVar(&N, "n", 1, "Filenumber to download")
 }
 
 func main() {
@@ -49,7 +49,7 @@ func main() {
 	ns := make(chan int)
 	downloader(N, ns)
 
-	for i := 1; i < N; i++ {
+	for i := 1; i <= N; i++ {
 		n := <-ns
 		primes := atoiPipe(primeGenerator(n))
 		x := 0
@@ -63,7 +63,7 @@ func main() {
 }
 
 func downloader(n int, out chan int) {
-	for i := 1; i < n; i++ {
+	for i := 1; i <= n; i++ {
 		go func(i int) {
 			err := downloadFiles(i)
 			if err != nil {
