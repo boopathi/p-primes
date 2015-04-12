@@ -1,4 +1,4 @@
-all: test
+all: clean test
 
 build:
 	go build
