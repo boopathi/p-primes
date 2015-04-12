@@ -77,7 +77,8 @@ func downloader(n int, out chan int) {
 func primeGenerator(n int) <-chan string {
 	out := make(chan string)
 	go func() {
-		primesFile, err := os.Open(CACHEDIR + "/primes" + strconv.Itoa(n) + ".txt")
+		filepath := CACHEDIR + "/primes" + strconv.Itoa(n) + ".txt"
+		primesFile, err := os.Open(filepath)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -86,7 +87,7 @@ func primeGenerator(n int) <-chan string {
 		s := bufio.NewScanner(primesFile)
 		// skip first line - contains header
 		if !s.Scan() {
-			log.Fatal(err)
+			log.Fatal("No content found in file - ", filepath)
 		}
 		for s.Scan() {
 			fields := strings.Fields(s.Text())
